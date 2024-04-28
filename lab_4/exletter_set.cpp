@@ -10,8 +10,8 @@ rk6::exletter_set::exletter_set (const char * p)
 	for ( ; *p ; ++p)
 	{
 		if (!isalpha(*p)) throw std::runtime_error ("rk6::exletter_set only supports latin alphabet characters");
-		if (islower(*p)) encoded[0] |= (1 << (*p - 'a'));
-		else (isupper(*p)) encoded[1] |= (1 << (*p - 'A'));
+		if      (islower(*p)) encoded[0] |= (1 << (*p - 'a'));
+		else if (isupper(*p)) encoded[1] |= (1 << (*p - 'A'));
 	}
 }
 
