@@ -42,7 +42,7 @@ class rk6::list
     using node = rk6::list_entry<T>;
    
     public:
-        /* Bidirectional aist iterator as defined by C++11 iterator classification
+        /* Bidirectional iterator as defined by C++11 iterator classification
          */
         struct iterator
         {
