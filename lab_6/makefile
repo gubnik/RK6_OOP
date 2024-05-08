@@ -1,5 +1,5 @@
 CC=g++
-FLAGS=-std=c++11 -Wpedantic -O3
+FLAGS=-std=c++11 -Wpedantic
 EX=main
 S=dlstring
 

@@ -4,6 +4,10 @@
 
 namespace rk6
 {
+    /*
+     * I could just do
+     *   using dlstring = rk6::list<char>;
+     */
     class dlstring;
     class dlstring : public list<char>
     {
@@ -16,9 +20,3 @@ namespace rk6
     };
 }
 
-rk6::dlstring operator""_dl (const char * p, std::size_t n)
-{
-    rk6::dlstring ret {};
-    for (std::size_t i = 0; i < n; i++) ret.push_front (p[i]);
-    return ret;
-}

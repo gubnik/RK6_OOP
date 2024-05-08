@@ -1,3 +1,7 @@
+/* Doubly linked list (DLL) implementatioan
+ * Author - Nikolay Gubankov (nikgub_)
+ */
+
 #pragma once
 
 #include <iterator>
@@ -9,6 +13,12 @@ namespace rk6
     template <class T> class list_entry;
 }
 
+/*
+ * Class template that represents a node of a DLL
+ * @field value - value at this node
+ * @field next - next node in DLL
+ * @dield prev - previous node in DLL
+ */
 template <class T>
 struct rk6::list_entry
 {
@@ -23,13 +33,20 @@ struct rk6::list_entry
         }
 };
 
+/* Class template representing DLL that can be passed by value and doesnt decay into a pointer
+ * Total size on x86_64 architecture - 8 bytes
+ */
 template <class T>
 class rk6::list
 {
     using node = rk6::list_entry<T>;
+   
     public:
+        /* Bidirectional aist iterator as defined by C++11 iterator classification
+         */
         struct iterator
         {
+            // All of these must be defined according to C++11 (and onward)
             using iterator_category = std::bidirectional_iterator_tag;
             using value_type = T;
             using difference_type = ptrdiff_t;
@@ -39,7 +56,10 @@ class rk6::list
             using reverse_iterator = std::reverse_iterator<iterator>;
             using const_reverse_iterator = std::reverse_iterator<iterator>;
             
+            // Pointer to a node at a list
             node * ptr;
+            
+            // All of these must be defined according to C++11 (and onward)
             iterator (node * N) : ptr (N) {}
             iterator& operator++ () { ptr = ptr->next; return *this; }
             iterator operator++ (int) { auto temp = *this; ptr = ptr->next; return temp; }
@@ -50,11 +70,17 @@ class rk6::list
             reference operator* () { return ptr->value; }
         };
         
+        // Simply for convenience
         using reverse_iterator = typename iterator::const_reverse_iterator;
 
+        // Default constructor
         list () : root (nullptr) {}
+        // Constructor that initializes first element
         list (T value) : root (new node(value, nullptr, nullptr)) {}
 
+        /* Returns list's element at index
+         * @param d - index to return
+         */
         node * get (std::size_t d = 0)
         {
             if (!root) throw std::runtime_error ("List is empty");
@@ -71,6 +97,9 @@ class rk6::list
             return curr;
         }
 
+        /* Adds an element to the front of list
+         * @param value - value to add
+         */
         node * push_front (T value) noexcept
         {
             if (!root) return root = new node(value);
@@ -81,6 +110,10 @@ class rk6::list
             return curr -> next;
         }
         
+        /* Adds an element to the back of list
+         * @param value - value to add
+         * Returns the added node's address
+         */
         node * push_back (T value) noexcept
         {
             if (!root) return root = new node(value);
@@ -91,6 +124,8 @@ class rk6::list
             return curr -> prev;
         }
 
+        /* Returns the first element in the list (not to be confused with list's root)
+         */
         node * get_first ()
         {
             if (!root) throw std::runtime_error ("List is empty");
@@ -99,6 +134,8 @@ class rk6::list
             return curr;
         }
         
+        /* Returns the last element in the list (not to be confused with list's root)
+         */
         node * get_last ()
         {
             if (!root) throw std::runtime_error ("List is empty");
@@ -107,13 +144,35 @@ class rk6::list
             return curr;
         }
 
-        node * insert (std::size_t place, T value, bool push_back = false)
+        /* Returns list's current size
+         */
+        std::size_t size ()
+        {
+            std::size_t ret = 0;
+            node * curr = this->get_first();
+            while (curr)
+            {
+                curr = curr -> next;
+                ret++;
+            }
+            return ret;
+        }
+
+        /* Inserts an element at index
+         * @param place - index
+         * @param value - value to insert
+         */
+        node * insert (std::size_t place, T value)
         {
             node * at_place = this->get(place);
             if (push_back) return this->insert_after(at_place, value);
             else return this->insert_before(at_place, value);
         }
 
+        /* Inserts an element after a node
+         * @param other - address of a target node
+         * @param value - value to insert
+         */
         node * insert_after (node * other, T value)
         {
             node * temp = new node (value, other->next, other);
@@ -122,6 +181,10 @@ class rk6::list
             return temp;
         }
 
+        /* Inserts an element before a node
+         * @param other - address of a target node
+         * @param value - value to insert
+         */
         node * insert_before (node * other, T value)
         {
             node * temp = new node (value, other, other->prev);
@@ -130,6 +193,9 @@ class rk6::list
             return temp;
         }
 
+        /* Deletes a node
+         * @param addr - node to delete
+         */
         void pop (node * addr)
         {
             if (addr == root) root = addr->next;
@@ -138,15 +204,27 @@ class rk6::list
             delete addr;
         }
 
-        iterator begin() { return this->get_first(); }
-        iterator end() { return this->get_last()->next; }
-        reverse_iterator rbegin()
+        /* Swaps two nodes in a list
+         * Does not provide a guard against swapping nodes outside of a list
+         * @param first, second - nodes to swap
+         */
+        void stupid_swap (node * first, node * second)
         {
-            node * P = this->push_front({});
-            return reverse_iterator(P);
+            this->insert_after (first, second->value);
+            this->insert_after (second, first->value);
+            this->pop (second);
+            this->pop (first);
         }
+
+        iterator begin() { return this->get_first(); }
+        iterator end() { return this->get_last()->next;}
+        // Unused and unstable, omits the last element
+        reverse_iterator rbegin() { return reverse_iterator(this->get_last()); }
+        // Unused and unstable
         reverse_iterator rend()   { return reverse_iterator(this->begin()); }
 
+        /* Deletes all nodes in a list
+         */
         ~list ()
         {
             node * curr = this->get_first(), * temp;
@@ -158,5 +236,9 @@ class rk6::list
             }
         }
     private:
+        /* Pointer to the root of the list
+         * Root is the first element upon initializing list
+         * Will not be first after new elements are pushed back so don't rely on it
+         */
         node * root;
 };
