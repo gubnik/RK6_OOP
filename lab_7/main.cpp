@@ -7,7 +7,18 @@ int main (int argc, char ** argv)
     // Buffering a pointer to piece type we're using
     chess::piece_type * type = &chess::pieces::TZAR;
     // Pointer to a field with a piece
-    chess::field * field_ptr = Board.set(4, 3, type);
+    chess::field * field_ptr;
+    // If a second argument was provided, parse it into a location
+    if (argc == 2)
+    {
+        const char x = argv[1][0];
+        const char y = argv[1][1];
+        const int py = ((x > 'h') ? 'h' : (x < 'a') ? 'a': x) - 'a';
+        const int px = 8 - (((y > '8') ? '8' : (y < '1') ? '1' : y) - '1') - 1;
+        field_ptr = Board.set(px, py, type);
+    }
+    // ...else set a default
+    else field_ptr= Board.set(4, 3, type);
     // Creating a renderer
     chess::render::renderer Renderer;
     // Rendering a single frame
