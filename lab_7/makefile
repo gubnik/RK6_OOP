@@ -10,7 +10,7 @@ F=field
 B=board
 
 main: main.cpp $B $hrenderer.hpp
-	$(CC) $b$P.o $b$F.o $b$B.o $(FLAGS) -fsanitize=address -o main main.cpp
+	$(CC) $b$P.o $b$F.o $b$B.o $(FLAGS) -fsanitize=address -o main.o main.cpp
 
 $B: $F $h$B.hpp $c$B.cpp
 	$(CC) $(FLAGS) -o bin/$B.o -c $c$B.cpp
