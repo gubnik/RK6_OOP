@@ -1,17 +1,14 @@
 #include "../bits/piece.hpp"
 #include "../bits/field.hpp"
 
-//#include "math.h"
-
-
 using namespace chess;
 
 #include <iostream>
 
 bool king_type::move (field F, field T)
 {
-    const loc_t dx = std::abs(F.X - T.X);
-    const loc_t dy = std::abs(F.Y - T.Y);
+    const loc_t dx = std::abs(F.x() - T.x());
+    const loc_t dy = std::abs(F.y() - T.y());
     return (dx == 1 && dy == 0) || (dy == 1 && dx == 0) || (dx == 1 && dy == 1);
 }
 
@@ -24,8 +21,8 @@ inline char king_type::display () { return 'K'; }
 
 bool knight_type::move (field F, field T)
 {
-    const loc_t dx = std::abs(F.X - T.X);
-    const loc_t dy = std::abs(F.Y - T.Y);
+    const loc_t dx = std::abs(F.x() - T.x());
+    const loc_t dy = std::abs(F.y() - T.y());
     return (dx == 1 && dy == 2) || (dx == 2 && dy == 1);
 }
 

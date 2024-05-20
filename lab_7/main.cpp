@@ -1,27 +1,36 @@
 #include "chess"
-#include "bits/board.hpp"
 
 int main (int argc, char ** argv)
 {
+    // Creating a board
     chess::board Board;
+    // Buffering a pointer to piece type we're using
     chess::piece_type * type = &chess::pieces::TZAR;
-    chess::field * fptr = Board.set(4, 3, type);
+    // Pointer to a field with a piece
+    chess::field * field_ptr = Board.set(4, 3, type);
+    // Creating a renderer
     chess::render::renderer Renderer;
+    // Rendering a single frame
     Renderer.render(Board);
+    // Variables for entering a position
     chess::loc_t x, y;
+    // Entering a location in a standard notation i.e. "a5", "e8" etc.
     while (std::cin >> x >> y)
     {
+        // Calculating a new location in board's array
         const int py = ((x > 'h') ? 'h' : (x < 'a') ? 'a': x) - 'a';
         const int px = 8 - (((y > '8') ? '8' : (y < '1') ? '1' : y) - '1') - 1;
-        std::cout << (int)px << ' ' << (int)py << '\n';
-        std::cout << (int)fptr->x() << ' ' << (int)fptr->y() << '\n';
-        if (!(fptr->move(*Board.get(px, py))))
+        // If move is impossible, skip to the next iteration with an error message 
+        if (!(field_ptr->move(*Board.get(px, py))))
         {
             std::cout << "Unable to make a move\n";
             continue;
         }
-        Board.set(fptr->x(), fptr->y(), nullptr);
-        fptr = Board.set(px, py, type);
+        // Putting a null to the previous position
+        Board.set(field_ptr->x(), field_ptr->y(), nullptr);
+        // Setting a new address of a field with a piece
+        field_ptr = Board.set(px, py, type);
+        // Rendering the board
         Renderer.render(Board);
     }
 }

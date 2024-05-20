@@ -9,6 +9,10 @@
 
 namespace chess::render
 {
+    /*
+     * TODO: Implement X11 and ncurses
+     * Class for rendering a chess board into std::cout
+     */
     class renderer
     {
         public:

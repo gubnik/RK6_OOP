@@ -13,11 +13,24 @@ namespace chess
     template <loc_t Size> using board_t = std::array<field, Size * Size>;
     template <loc_t Size> using render_board_t = std::array<char, Size * Size>;
 
+    /*
+     * Abstract class for a chess piece
+     */
     class piece_type
     {
         public:
+            /* Validates a general move
+             * @param field1    Current field
+             * @param field2    Target field
+             */
             virtual bool move    (field, field) = 0;
+            /* Validates a move that attacks another piece
+             * @param field1    Current field
+             * @param field2    Target field
+             */
             virtual bool attack  (field, field) = 0;
+            /* Character associated with a piece
+             */
             virtual char display () = 0;
     };
     

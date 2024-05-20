@@ -4,6 +4,8 @@
 
 namespace chess
 {
+    /* Class for a chess board
+     */
     class board
     {
         public:
