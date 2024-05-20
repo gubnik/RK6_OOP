@@ -13,6 +13,8 @@ int main (int argc, char ** argv)
     {
         const int py = ((x > 'h') ? 'h' : (x < 'a') ? 'a': x) - 'a';
         const int px = 8 - (((y > '8') ? '8' : (y < '1') ? '1' : y) - '1') - 1;
+        std::cout << (int)px << ' ' << (int)py << '\n';
+        std::cout << (int)fptr->x() << ' ' << (int)fptr->y() << '\n';
         if (!(fptr->move(*Board.get(px, py))))
         {
             std::cout << "Unable to make a move\n";
