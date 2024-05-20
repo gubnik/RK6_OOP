@@ -12,7 +12,9 @@ namespace chess
             board ();
             board_t <8> data();
             field * get (loc_t, loc_t);
+            field * get_unparsed (loc_t, loc_t);
             field * set (loc_t, loc_t, piece_type *);
+            field * set_unparsed (loc_t, loc_t, piece_type *);
         private:
             board_t <8> Data;
     };
