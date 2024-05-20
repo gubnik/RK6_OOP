@@ -43,6 +43,9 @@ void renderer::draw ()
         for (loc_t y = 0; y < 8; y++)
         {
             char r = ToRender[x * 8 + y];
+#if defined (DISABLE_COLORS)
+            const char * dec = "";
+#else
 #if defined (HIGH_CONTRAST)
             const char * dec = (r == ' ')
                 ? ((x + y + 1) % 2) ? "\033[0;101m" : "\033[0;102m"
@@ -60,7 +63,12 @@ void renderer::draw ()
 #endif
                 : ((x + y + 1) % 2) ? "\033[0;90m" : "\033[0;97m";
 #endif
-            std::cout << dec << r << "\033[0m" << ' ';
+#endif
+            std::cout << dec << r
+#ifndef DISABLE_COLORS
+                << "\033[0m"
+#endif
+                << ' ';
         }
         std::cout << '\n';
     }
