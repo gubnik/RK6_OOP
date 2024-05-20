@@ -1,0 +1,4 @@
+#include "bits/piece.hpp"
+#include "bits/field.hpp"
+#include "bits/piece_types.hpp"
+#include "bits/renderer.hpp"

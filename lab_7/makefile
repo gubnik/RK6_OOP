@@ -1,0 +1,22 @@
+CC=g++
+FLAGS=-std=c++17 -Wpedantic
+
+h=bits/
+c=cpps/
+b=bin/
+
+P=piece
+F=field
+B=board
+
+main: main.cpp $B $hrenderer.hpp
+	$(CC) $b$P.o $b$F.o $b$B.o $(FLAGS) -fsanitize=address -o main main.cpp
+
+$B: $F $h$B.hpp $c$B.cpp
+	$(CC) $(FLAGS) -o bin/$B.o -c $c$B.cpp
+
+$F: $P $h$F.hpp $c$F.cpp
+	$(CC) $(FLAGS) -o bin/$F.o -c $c$F.cpp
+
+$P: $h$P.hpp $c$P.cpp
+	$(CC) $(FLAGS) -o $b$P.o -c $c$P.cpp
