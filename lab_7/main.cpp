@@ -16,7 +16,7 @@ int main (int argc, char ** argv)
         field_ptr = Board.set(x, y, type);
     }
     // ...else set a default
-    else field_ptr= Board.set_unparsed(4, 3, type);
+    else field_ptr= Board.set('d', '4', type);
     // Creating a renderer
     chess::render::renderer Renderer;
     // Rendering a single frame
